@@ -1,0 +1,5 @@
+version: 0.1.0
+files:
+  README.md:
+    - 'iterable_file_server v%.%.%'
+    - 'import { serve } from "https://deno.land/x/iterable_file_server@%.%.%/mod.ts'

@@ -44,7 +44,7 @@ Deno.test('serve - serves the given assets', async () => {
     cmd: [Deno.execPath(), "run", "--allow-net", "--unstable", "test_server.ts"],
   });
 
-  await new Promise((resolve) => setTimeout(resolve, 300));
+  await new Promise((resolve) => setTimeout(resolve, 2000));
 
   let res: Response;
   res = await fetch("http://0.0.0.0:3030/foo.txt");

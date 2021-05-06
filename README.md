@@ -5,7 +5,7 @@
 # Usage
 
 ```ts
-import { serve } from "https://deno.land/x/iterable_file_server@0.1.0/mod.ts
+import { serve } from "https://deno.land/x/iterable_file_server@0.1.0/mod.ts";
 
 async function* generateItems() {
   // yields items as Blob & { name: string }

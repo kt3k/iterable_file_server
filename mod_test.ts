@@ -3,7 +3,7 @@ import {
   assertStringIncludes,
 } from "https://deno.land/std@0.95.0/testing/asserts.ts";
 
-import { accumulate, Cache, /*serveFromCache*/ } from "./mod.ts";
+import { accumulate, Cache } from "./mod.ts";
 
 Deno.test("accumulate - accumulates the file from the iterable", async () => {
   const cache = {} as Cache;
@@ -39,9 +39,15 @@ Deno.test("serveFromCache - serves items from cache", async () => {
 });
 */
 
-Deno.test('serve - serves the given assets', async () => {
+Deno.test("serve - serves the given assets", async () => {
   const p = Deno.run({
-    cmd: [Deno.execPath(), "run", "--allow-net", "--unstable", "test_server.ts"],
+    cmd: [
+      Deno.execPath(),
+      "run",
+      "--allow-net",
+      "--unstable",
+      "test_server.ts",
+    ],
   });
 
   await new Promise((resolve) => setTimeout(resolve, 2000));

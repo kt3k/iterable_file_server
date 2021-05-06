@@ -1,5 +1,7 @@
-version: 0.1.0
+---
+version: 0.1.1
+commit: Bump to version v%.%.%
 files:
   README.md:
-    - 'iterable_file_server v%.%.%'
-    - 'import { serve } from "https://deno.land/x/iterable_file_server@%.%.%/mod.ts'
+  - iterable_file_server v%.%.%
+  - import { serve } from "https://deno.land/x/iterable_file_server@%.%.%/mod.ts

@@ -28,7 +28,7 @@ Deno.test("serveFromCache - serves items from cache", async () => {
 
   await new Promise((resolve) => { setTimeout(resolve, 300); });
 
-  const resp = await fetch("http://localhost:3030/foo.txt");
+  const resp = await fetch("http://0.0.0.0:3030/foo.txt");
   assertEquals(await resp.text(), "foo");
 
   await new Promise((resolve) => { setTimeout(resolve, 300); });
@@ -47,15 +47,15 @@ Deno.test('serve - serves the given assets', async () => {
   await new Promise((resolve) => setTimeout(resolve, 300));
 
   let res: Response;
-  res = await fetch("http://localhost:3030/foo.txt");
+  res = await fetch("http://0.0.0.0:3030/foo.txt");
   assertEquals(await res.text(), "foo");
-  res = await fetch("http://localhost:3030/foo/bar.html");
+  res = await fetch("http://0.0.0.0:3030/foo/bar.html");
   assertEquals(await res.text(), "bar");
-  res = await fetch("http://localhost:3030/foo/bar/baz.txt");
+  res = await fetch("http://0.0.0.0:3030/foo/bar/baz.txt");
   assertEquals(await res.text(), "baz");
-  res = await fetch("http://localhost:3030/asdf.txt");
+  res = await fetch("http://0.0.0.0:3030/asdf.txt");
   assertEquals(await res.text(), "404 Not Found");
-  res = await fetch("http://localhost:3030/__debug__");
+  res = await fetch("http://0.0.0.0:3030/__debug__");
   assertStringIncludes(await res.text(), "debug page");
 
   Deno.kill(p.pid, Deno.Signal.SIGINT);

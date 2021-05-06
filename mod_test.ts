@@ -39,7 +39,7 @@ Deno.test("serveFromCache - serves items from cache", async () => {
 });
 */
 
-Deno.test('serve', async () => {
+Deno.test('serve - serves the given assets', async () => {
   const p = Deno.run({
     cmd: [Deno.execPath(), "run", "--allow-net", "--unstable", "test_server.ts"],
   });

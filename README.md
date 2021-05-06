@@ -8,10 +8,19 @@
 import { serve } from "https://deno.land/x/iterable_file_server@0.1.0/mod.ts";
 
 async function* generateItems() {
-  // yields items as Blob & { name: string }
+  yield Object.assign(new Blob(["foo"]), { name: "foo.html" });
+  yield Object.assign(new Blob(["bar"]), { name: "foo/bar.html" });
+  yield Object.assign(new Blob(["baz"]), { name: "foo/bar/baz.html" });
+  // ...
 }
 
-const server = serve(generateItems(), { port: 8080 });
+const server = serve(generateItems(), { port: 3000 });
+// This serves the follwoing paths:
+// - http://localhost:3000/foo.html
+// - http://localhost:3000/foo/bar.html
+// - http://localhost:3000/foo/bar/baz.html
+// This also serves the debug page:
+// - http://localhost:3000/__debug__
 
 // ...
 

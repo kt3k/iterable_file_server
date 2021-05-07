@@ -53,16 +53,26 @@ Deno.test("serve - serves the given assets", async () => {
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
   let res: Response;
+  res = await fetch("http://0.0.0.0:3030/__debug__");
+  assertStringIncludes(await res.text(), "debug page");
+
   res = await fetch("http://0.0.0.0:3030/foo.txt");
   assertEquals(await res.text(), "foo");
   res = await fetch("http://0.0.0.0:3030/foo/bar.html");
   assertEquals(await res.text(), "bar");
   res = await fetch("http://0.0.0.0:3030/foo/bar/baz.txt");
   assertEquals(await res.text(), "baz");
+
+  res = await fetch("http://0.0.0.0:3030/");
+  assertEquals(await res.text(), "index");
+  res = await fetch("http://0.0.0.0:3030/foo");
+  assertEquals(await res.text(), "404 Not Found");
+  res = await fetch("http://0.0.0.0:3030/foo/");
+  assertEquals(await res.text(), "foo/index");
+
   res = await fetch("http://0.0.0.0:3030/asdf.txt");
   assertEquals(await res.text(), "404 Not Found");
-  res = await fetch("http://0.0.0.0:3030/__debug__");
-  assertStringIncludes(await res.text(), "debug page");
+
 
   Deno.kill(p.pid, Deno.Signal.SIGINT);
   p.close();

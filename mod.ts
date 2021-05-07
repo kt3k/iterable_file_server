@@ -83,8 +83,19 @@ export function serveFromCache(
             continue;
           }
 
-          const resp = cache[pathname];
-          respondWith(resp ? new Response(resp) : responseNotFound());
+          let resp = cache[pathname];
+          if (resp) {
+            respondWith(new Response(resp));
+            continue;
+          }
+          if (pathname.endsWith("/")) {
+            resp = cache[pathname + "index.html"];
+            if (resp) {
+              respondWith(new Response(resp));
+              continue;
+            }
+          }
+          respondWith(responseNotFound());
         }
       })().catch(onError);
     }

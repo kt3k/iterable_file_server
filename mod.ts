@@ -25,7 +25,8 @@ export type Cache = Record<string, File>;
  */
 export function serve(
   src: AsyncIterable<File>,
-  { port = 3000, onError = console.error, debugPagePath = "/__debug__" }: ServeOptions = {},
+  { port = 3000, onError = console.error, debugPagePath = "/__debug__" }:
+    ServeOptions = {},
 ): Server {
   const listener = Deno.listen({ port });
   const cache = {} as Cache;
@@ -101,6 +102,12 @@ export function serveFromCache(
               respondWith(new Response(resp));
               continue;
             }
+          }
+          // If there's a file at the path /404, it works as the custom 404 page.
+          resp = cache["/404"];
+          if (resp) {
+            respondWith(new Response(resp));
+            continue;
           }
           respondWith(responseNotFound(debugPagePath));
         }

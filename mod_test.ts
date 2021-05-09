@@ -90,9 +90,26 @@ Deno.test("serve - custom debug page path", async () => {
 
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
-  let res: Response;
-  res = await fetch("http://0.0.0.0:3031/__mypath__");
+  const res = await fetch("http://0.0.0.0:3031/__mypath__");
   assertStringIncludes(await res.text(), "debug page");
+  p.close();
+});
+
+Deno.test("serve - custom 404 page", async () => {
+  const p = Deno.run({
+    cmd: [
+      Deno.execPath(),
+      "run",
+      "--allow-net",
+      "--unstable",
+      "test_server3.ts",
+    ],
+  });
+
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
+  const res = await fetch("http://0.0.0.0:3032/asdf");
+  assertEquals(await res.text(), "custom 404");
   p.close();
 });
 
@@ -101,4 +118,3 @@ async function* gen() {
   yield Object.assign(new Blob(["bar"]), { name: "foo/bar.html" });
   yield Object.assign(new Blob(["baz"]), { name: "foo/bar/baz.txt" });
 }
-

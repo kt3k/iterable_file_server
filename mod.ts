@@ -107,12 +107,31 @@ export function serveFromCache(
  * Returns a response for the debug page.
  */
 function responseDebugPage(cache: Cache): Response {
-  return new Response("debug page: " + Object.keys(cache).toString());
+  return new Response(
+    `
+      <pre>
+debug page
+${Object.keys(cache).map((path) => `<a href="${path}">${path}</a>`).join("\n")}
+      </pre>
+    `,
+    {
+      status: 200,
+      headers: {
+        "content-type": "text/html",
+      },
+    },
+  );
 }
 
 /**
  * Returns a response for the 404 page.
  */
 function responseNotFound(): Response {
-  return new Response(`404 Not Found`, { status: 404 });
+  return new Response(
+    `
+      <h1>404 Not Found</h1>
+      <p><a href="/__debug__">Go to debug page</a></p>
+    `,
+    { status: 404, headers: { "content-type": "text-html" } },
+  );
 }

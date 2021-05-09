@@ -73,7 +73,6 @@ Deno.test("serve - serves the given assets", async () => {
   res = await fetch("http://0.0.0.0:3030/asdf.txt");
   assertEquals(await res.text(), "404 Not Found");
 
-
   Deno.kill(p.pid, Deno.Signal.SIGINT);
   p.close();
 });

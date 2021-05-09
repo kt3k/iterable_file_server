@@ -66,14 +66,33 @@ Deno.test("serve - serves the given assets", async () => {
   res = await fetch("http://0.0.0.0:3030/");
   assertEquals(await res.text(), "index");
   res = await fetch("http://0.0.0.0:3030/foo");
-  assertEquals(await res.text(), "404 Not Found");
+  assertStringIncludes(await res.text(), "404 Not Found");
   res = await fetch("http://0.0.0.0:3030/foo/");
   assertEquals(await res.text(), "foo/index");
 
   res = await fetch("http://0.0.0.0:3030/asdf.txt");
-  assertEquals(await res.text(), "404 Not Found");
+  assertStringIncludes(await res.text(), "404 Not Found");
 
   Deno.kill(p.pid, Deno.Signal.SIGINT);
+  p.close();
+});
+
+Deno.test("serve - custom debug page path", async () => {
+  const p = Deno.run({
+    cmd: [
+      Deno.execPath(),
+      "run",
+      "--allow-net",
+      "--unstable",
+      "test_server2.ts",
+    ],
+  });
+
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
+  let res: Response;
+  res = await fetch("http://0.0.0.0:3031/__mypath__");
+  assertStringIncludes(await res.text(), "debug page");
   p.close();
 });
 
@@ -82,3 +101,4 @@ async function* gen() {
   yield Object.assign(new Blob(["bar"]), { name: "foo/bar.html" });
   yield Object.assign(new Blob(["baz"]), { name: "foo/bar/baz.txt" });
 }
+

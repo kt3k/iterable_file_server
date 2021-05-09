@@ -5,6 +5,7 @@ type Server = {
 type ServeOptions = {
   port?: number;
   onError?: (e: Error) => void;
+  debugPagePath?: string;
 };
 
 // TODO(kt3k): Replace this type with native DOM File type
@@ -24,13 +25,13 @@ export type Cache = Record<string, File>;
  */
 export function serve(
   src: AsyncIterable<File>,
-  { port = 3000, onError = console.error }: ServeOptions = {},
+  { port = 3000, onError = console.error, debugPagePath = "/__debug__" }: ServeOptions = {},
 ): Server {
   const listener = Deno.listen({ port });
   const cache = {} as Cache;
 
   accumulate(src, cache).catch(onError);
-  const closer = serveFromCache(listener, cache, { onError });
+  const closer = serveFromCache(listener, cache, { onError, debugPagePath });
 
   return {
     addr: listener.addr,
@@ -62,7 +63,7 @@ export async function accumulate(
 export function serveFromCache(
   listener: Deno.Listener,
   cache: Cache,
-  { onError }: ServeOptions,
+  { onError, debugPagePath }: ServeOptions,
 ): () => void {
   const httpConns = [] as Deno.HttpConn[];
   const closer = () => {
@@ -70,6 +71,12 @@ export function serveFromCache(
       conn.close();
     }
   };
+  if (!debugPagePath) {
+    throw new Error("debugPagePath option is not given");
+  }
+  if (!debugPagePath.startsWith("/")) {
+    throw new Error("debugPagePath option doesn't start with '/'");
+  }
   (async () => {
     for await (const conn of listener) {
       (async () => {
@@ -78,7 +85,7 @@ export function serveFromCache(
         for await (const { request, respondWith } of httpConn) {
           const { pathname } = new URL(request.url);
 
-          if (pathname === "/__debug__") {
+          if (pathname === debugPagePath) {
             respondWith(responseDebugPage(cache));
             continue;
           }
@@ -95,7 +102,7 @@ export function serveFromCache(
               continue;
             }
           }
-          respondWith(responseNotFound());
+          respondWith(responseNotFound(debugPagePath));
         }
       })().catch(onError);
     }
@@ -126,11 +133,11 @@ ${Object.keys(cache).map((path) => `<a href="${path}">${path}</a>`).join("\n")}
 /**
  * Returns a response for the 404 page.
  */
-function responseNotFound(): Response {
+function responseNotFound(debugPagePath: string): Response {
   return new Response(
     `
       <h1>404 Not Found</h1>
-      <p><a href="/__debug__">Go to debug page</a></p>
+      <p><a href="${debugPagePath}">Go to debug page</a></p>
     `,
     { status: 404, headers: { "content-type": "text-html" } },
   );

@@ -1,11 +1,11 @@
-# iterable_file_server v0.1.5
+# iterable_file_server v0.1.6
 
 > Serve items from `AsyncIterable<F>`, where `F = Blob & { name: string }`
 
 # Usage
 
 ```ts
-import { serve } from "https://deno.land/x/iterable_file_server@0.1.5/mod.ts";
+import { serve } from "https://deno.land/x/iterable_file_server@v0.1.6/mod.ts";
 
 async function* generateItems() {
   yield Object.assign(new Blob(["foo"]), { name: "foo.html" });

@@ -1,7 +1,7 @@
 import { getMediaType } from "./media_types.ts";
 import {
   assertEquals,
-} from "https://deno.land/std@0.95.0/testing/asserts.ts";
+} from "https://deno.land/std@0.103.0/testing/asserts.ts";
 
 Deno.test("getMediaType - known types", () => {
   assertEquals(getMediaType(".txt"), "text/plain");

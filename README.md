@@ -31,6 +31,10 @@ server.close();
 This depends on native http bindings, so you need `--unstable` flag to use this
 module.
 
+# History
+
+- 2021-07-31 v0.1.7 Set `content-type` header #3.
+
 # License
 
 MIT

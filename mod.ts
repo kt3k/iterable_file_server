@@ -1,3 +1,4 @@
+import { getMediaType } from "./media_types.ts";
 type Server = {
   close(): void;
   addr: Deno.Addr;
@@ -93,13 +94,25 @@ export function serveFromCache(
 
           let resp = cache[pathname];
           if (resp) {
-            respondWith(new Response(resp));
+            respondWith(
+              new Response(resp, {
+                headers: {
+                  "content-type": getMediaType(
+                    pathname.match(/\.[a-zA-Z0-9]+$/)?.[0],
+                  ),
+                },
+              }),
+            );
             continue;
           }
           if (pathname.endsWith("/")) {
             resp = cache[pathname + "index.html"];
             if (resp) {
-              respondWith(new Response(resp));
+              respondWith(new Response(resp, {
+                headers: {
+                  "content-type": "text/html",
+                }
+              }));
               continue;
             }
           }
@@ -146,6 +159,6 @@ function responseNotFound(debugPagePath: string): Response {
       <h1>404 Not Found</h1>
       <p><a href="${debugPagePath}">Go to debug page</a></p>
     `,
-    { status: 404, headers: { "content-type": "text-html" } },
+    { status: 404, headers: { "content-type": "text/html" } },
   );
 }

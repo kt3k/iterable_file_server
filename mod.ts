@@ -108,11 +108,13 @@ export function serveFromCache(
           if (pathname.endsWith("/")) {
             resp = cache[pathname + "index.html"];
             if (resp) {
-              respondWith(new Response(resp, {
-                headers: {
-                  "content-type": "text/html",
-                }
-              }));
+              respondWith(
+                new Response(resp, {
+                  headers: {
+                    "content-type": "text/html",
+                  },
+                }),
+              );
               continue;
             }
           }

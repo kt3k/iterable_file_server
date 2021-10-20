@@ -1,7 +1,7 @@
 import { serve } from "./mod.ts";
 
 async function* gen() {
-  yield Object.assign(new Blob(["custom 404"]), { name: "/404" });
+  yield new File(["custom 404"], "/404");
 }
 
 console.log("Starting the server");

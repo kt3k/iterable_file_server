@@ -1,12 +1,12 @@
 import { serve } from "./mod.ts";
 
 async function* gen() {
-  yield Object.assign(new Blob(["foo"]), { name: "foo.txt" });
-  yield Object.assign(new Blob(["bar"]), { name: "foo/bar.html" });
-  yield Object.assign(new Blob(["baz"]), { name: "foo/bar/baz.txt" });
+  yield new File(["foo"], "foo.txt");
+  yield new File(["bar"], "foo/bar.html");
+  yield new File(["baz"], "foo/bar/baz.txt");
 
-  yield Object.assign(new Blob(["index"]), { name: "index.html" });
-  yield Object.assign(new Blob(["foo/index"]), { name: "foo/index.html" });
+  yield new File(["index"], "index.html");
+  yield new File(["foo/index"], "foo/index.html");
 }
 
 console.log("Starting the server");

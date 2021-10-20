@@ -73,7 +73,7 @@ Deno.test("serve - serves the given assets", async () => {
   res = await fetch("http://0.0.0.0:3030/asdf.txt");
   assertStringIncludes(await res.text(), "404 Not Found");
 
-  Deno.kill(p.pid, Deno.Signal.SIGINT);
+  Deno.kill(p.pid, "SIGINT");
   p.close();
 });
 
@@ -114,7 +114,7 @@ Deno.test("serve - custom 404 page", async () => {
 });
 
 async function* gen() {
-  yield Object.assign(new Blob(["foo"]), { name: "foo.txt" });
-  yield Object.assign(new Blob(["bar"]), { name: "foo/bar.html" });
-  yield Object.assign(new Blob(["baz"]), { name: "foo/bar/baz.txt" });
+  yield new File(["foo"], "foo.txt");
+  yield new File(["bar"], "foo/bar.html");
+  yield new File(["baz"], "foo/bar/baz.txt");
 }

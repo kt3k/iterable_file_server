@@ -9,9 +9,6 @@ type ServeOptions = {
   debugPagePath?: string;
 };
 
-// TODO(kt3k): Replace this type with native DOM File type
-// when https://github.com/denoland/deno/pull/10459 is merged and released
-type File = Blob & { name: string };
 /**
  * @private
  */

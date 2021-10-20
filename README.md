@@ -1,16 +1,16 @@
-# iterable_file_server v0.1.7
+# iterable_file_server v0.2.0
 
-> Serve items from `AsyncIterable<F>`, where `F = Blob & { name: string }`
+> Serve items from `AsyncIterable<File>`
 
 # Usage
 
 ```ts
-import { serve } from "https://deno.land/x/iterable_file_server@v0.1.7/mod.ts";
+import { serve } from "https://deno.land/x/iterable_file_server@v0.2.0/mod.ts";
 
 async function* generateItems() {
-  yield Object.assign(new Blob(["foo"]), { name: "foo.html" });
-  yield Object.assign(new Blob(["bar"]), { name: "foo/bar.html" });
-  yield Object.assign(new Blob(["baz"]), { name: "foo/bar/baz.html" });
+  yield new File(["foo"], "foo.html");
+  yield new File(["bar"], "foo/bar.html");
+  yield new File(["baz"], "foo/bar/baz.html");
   // ...
 }
 
@@ -33,6 +33,7 @@ module.
 
 # History
 
+- 2021-10-20 v0.2.0 Use `File` interface for a file #3.
 - 2021-07-31 v0.1.7 Set `content-type` header #3.
 
 # License

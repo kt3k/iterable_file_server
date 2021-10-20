@@ -33,7 +33,7 @@ module.
 
 # History
 
-- 2021-10-20 v0.2.0 Use `File` interface for a file #3.
+- 2021-10-20 v0.2.0 Use `File` interface for a file #5.
 - 2021-07-31 v0.1.7 Set `content-type` header #3.
 
 # License
